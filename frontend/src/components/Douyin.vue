@@ -5,7 +5,7 @@
     <div class="helper-doc">
       <span>{{ $t('helpTip') }}</span>
       <span style="height: 16px;width: 16px;margin-left: 12px;">
-        <a href="https://jfsq6znqku.feishu.cn/wiki/T4z9wWK88inr5zkQqhtcwUCSnSf?from=from_copylink" target="_blank"><span>说明文档</span></a>
+        <a href="https://aigccamp.feishu.cn/wiki/LvQRwI1A4iYtnMkOBtZc2zfsnMd" target="_blank"><span>说明文档</span></a>
       </span>
       
     </div>

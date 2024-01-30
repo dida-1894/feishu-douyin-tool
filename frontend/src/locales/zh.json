@@ -27,7 +27,7 @@
     "selectGroupFieldTip": "插件可自动创建所选字段。如需映射，请确保多维表格中的字段名称和选项名称一致，建议“博主”字段类型为文本，“xx量”字段类型为数字， “xx时间”字段为日期。"
   },
   "labels": {
-    "link": "链接",
+    "link": "链接所在列",
     "cookie": "ttwid Cookie",
     "xSCommon": "X-S-Common"
   },

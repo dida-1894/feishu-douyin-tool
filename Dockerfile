@@ -1,7 +1,7 @@
 FROM node:18
 
 # Create app directory
-WORKDIR /usr/src/tiktokweb
+WORKDIR /usr/src/feishudouyin
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -9,6 +9,7 @@ WORKDIR /usr/src/tiktokweb
 COPY package*.json ./
 
 RUN npm install
+RUN npm build
 # If you are building your code for production
 # RUN npm ci --omit=dev
 

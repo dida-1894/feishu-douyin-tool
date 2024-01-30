@@ -1,5 +1,5 @@
 {
-  "name": "tiktokweb",
+  "name": "feishudouyin",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -25,13 +25,13 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Johnserf-Seed/TikTokWeb.git"
+    "url": "git+https://github.com/happyVee/feishu-douyin-tool.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Johnserf-Seed/TikTokWeb/issues"
+    "url": "https://github.com/happyVee/feishu-douyin-tool/issues"
   },
-  "homepage": "https://github.com/Johnserf-Seed/TikTokWeb#readme"
+  "homepage": "https://github.com/happyVee/feishu-douyin-tool#readme"
 }
