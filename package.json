@@ -1,0 +1,11 @@
+{
+    "name": "feishu-douyin-tool",
+    "version": "1.0.0",
+    "scripts": {
+        "install": "npm --prefix ./frontend install && npm --prefix ./backend install",
+        "build": "npm --prefix ./frontend run build && rm -rf ./backend/public/* && cp -r ./frontend/dist/* ./backend/public/",
+        "start": "npm --prefix ./backend run start"
+      },
+    "dependencies": {},
+    "devDependencies": {}
+  }
