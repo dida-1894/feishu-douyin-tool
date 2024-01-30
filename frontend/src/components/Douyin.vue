@@ -517,11 +517,7 @@ const handleCheckedFieldsToMapChange = (value) => {
 
 const parseCookies = (ttwidCookie) => {
   return {
-        "odin_tt": "0c6d74a8c17b82de1728ba876b9fb5d0c6f125b50637c4dbf864f5db0a46ee5a51115992ea439e3acee8fa95bef469892f03a16e66fa6304cba0e47db28167b4",
-        "passport_csrf_token": "passport_csrf_token",
-        "sessionid_ss": "sessionid_ss",
-        "ttwid": ttwidCookie,
-        "msToken": "uhVOdNksGtdWBkExgZ2wgij8Dpv60lQhUzE2P2KD_PHtkBhMUpOSV6O8BzM66ardCWG7NbZF0A7PSXOzfnBybrqhlL3QzOBo_77xcxCR_CVw7pOitf-Oy55WxlE="
+        "ttwid": ttwidCookie
   };
 }
 

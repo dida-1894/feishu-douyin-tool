@@ -14,7 +14,7 @@ RUN npm build
 # RUN npm ci --omit=dev
 
 # Bundle app source
-COPY . .
+COPY ./backend .
 
 EXPOSE 4000
 

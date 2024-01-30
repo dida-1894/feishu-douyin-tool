@@ -26,7 +26,7 @@ router.post('/', async function(req, res, next) {
         // 如果未提供URL，则使用默认视频
         let videoUrl = req.body.url;
         if (!videoUrl) {
-            videoUrl = 'https://v.douyin.com/NKyY6Ch/';
+            throw new Error('视频地址为空');
         }
 
         // 检查URL的有效性（简单的）
