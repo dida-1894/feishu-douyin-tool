@@ -13,6 +13,10 @@ https://v.douyin.com/iL7oNdRv/
 ```
 
 ### 2. 打开多微表格插件，找到抖音小助手
+如果没有，可以参考下方本地运行方式，运行成功后
+添加自定义插件，地址填写：http://localhost:4000/
+![新增自定义插件](/use-doc/新增自定义插件.png)
+![填写自定义插件](/use-doc/填写自定义插件.png)
 
 ### 3. 获取cookie
 登陆 https://www.douyin.com/
