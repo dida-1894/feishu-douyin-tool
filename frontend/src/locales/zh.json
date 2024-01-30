@@ -1,0 +1,57 @@
+{
+  "title":"抖音数据获取", 
+  "selectGroup": {
+    "selectAll": "全选",
+    "videoInfo": {
+      "type": "类型",
+      "title": "标题",
+      "uploader": "博主",
+      "releaseTime": "发布时间",
+      "collectionCount": "收藏量",
+      "likeCount": "点赞量",
+      "shareCount": "转发量",
+      "commentCount": "评论量",
+      "videoUrl": "视频地址",
+      "videoCover": "视频封面",
+      "musicUrl": "配乐地址",
+      "musicTitle": "配乐标题",
+      "signature": "博主签名",
+      "userhome": "用户主页",
+      "videoId": "视频id",
+      "images": "图片列表",
+      "fetchDataTime": "数据获取时间"
+    }
+  },
+  "alerts": {
+    "selectNumberField": "依据抖音短链接，获取标题、点赞量、视频链接等数据",
+    "selectGroupFieldTip": "插件可自动创建所选字段。如需映射，请确保多维表格中的字段名称和选项名称一致，建议“博主”字段类型为文本，“xx量”字段类型为数字， “xx时间”字段为日期。"
+  },
+  "labels": {
+    "link": "链接",
+    "cookie": "ttwid Cookie",
+    "xSCommon": "X-S-Common"
+  },
+  "checks": {
+    "number": "类型校验失败：类型不是数字",
+    "text": "类型校验失败：类型不是文本",
+    "datetime": "类型校验失败：类型不是日期",
+    "attachment": "类型校验失败：类型不是附件"
+  },
+  "placeholder": {
+    "link": "请选择视频链接对应的字段列",
+    "interCount": "请选择所有需要计算的字段列",
+    "cookie": "请参照说明文档输入 cookie",
+    "xSCommon": "请参照说明文档输入 X-S-Common"
+  },
+  "detailMode": "开启详细模式",
+  "submit": "获取数据",
+  "helpTip": "帮助指南请查看这里 👉️",
+  "errorTip": {
+    "emptyNoteLink": "文章链接地址错误",
+    "errorLink": "链接格式错误，请查看说明文档",
+    "errorLinkType": "字段类型错误，请设置为文本类型",
+    "errorRequest": "Cookie 错误或请求超时"
+  },
+  "finishTip": "数据获取完成, 请求失败数："
+
+} 

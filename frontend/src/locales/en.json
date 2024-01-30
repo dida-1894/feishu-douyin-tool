@@ -1,0 +1,56 @@
+{
+  "title": "Little Red Book Data Retrieval",
+  "selectGroup": {
+    "selectAll": "Select All",
+    "videoInfo": {
+      "type": "Type",
+      "title": "Title",
+      "uploader": "Uploader",
+      "releaseTime": "Release Time",
+      "collectionCount": "Collection Count",
+      "likeCount": "Like Count",
+      "shareCount": "Share Count",
+      "commentCount": "Comment Count",
+      "videoUrl": "Video URL",
+      "videoCover": "Video Cover",
+      "musicUrl": "Music URL",
+      "musicTitle": "Music Title",
+      "signature": "Uploader Signature",
+      "userhome": "User Home",
+      "videoId": "Video ID",
+      "images": "Image List",
+      "fetchDataTime": "Data Fetch Time"
+    }
+  },
+  "alerts": {
+    "selectNumberField": "Retrieve data such as title, like count, etc., based on Little Red Book article links",
+    "selectGroupFieldTip": "The plugin can automatically create selected fields. For mapping, ensure the field names in the multi-dimensional table match the option names. 'Blogger' field type suggested as text, 'xx count' as number, and 'xx time' as date. 'Total Interaction Count' field can be calculated from multiple fields"
+  },
+  "labels": {
+    "link": "Link",
+    "cookie": "Cookie",
+    "xSCommon": "X-S-Common"
+  },
+  "checks": {
+    "number": "Type Check Failed: Type is not a number",
+    "text": "Type Check Failed: Type is not text",
+    "datetime": "Type Check Failed: Type is not a date",
+    "attachment": "Type Check Failed: Type is not an attachment"
+  },
+  "placeholder": {
+    "link": "Please select the field column corresponding to the video link",
+    "interCount": "Please select all the field columns that need to be calculated",
+    "cookie": "Please enter the cookie as per the help guide",
+    "xSCommon": "Please enter X-S-Common as per the help guide"
+  },
+  "detailMode": "Enable Detailed Mode",
+  "submit": "Retrieve Data",
+  "helpTip": "For the help guide, please see here 👉️",
+  "errorTip": {
+    "emptyNoteLink": "Incorrect article link address",
+    "errorLink": "Incorrect link format, please refer to the documentation",
+    "errorLinkType": "Incorrect field type, please set as text type",
+    "errorRequest": "Cookie error or request timed out"
+  },
+  "finishTip": "Data retrieval complete, number of failed requests:"
+}

@@ -1,0 +1,33 @@
+{
+  "private": true,
+  "dependencies": {
+    "types-registry": "^0.1.672"
+  },
+  "devDependencies": {
+    "@types/balanced-match": "^1.0.3",
+    "@types/brace-expansion": "^1.1.0",
+    "@types/braces": "^3.0.2",
+    "@types/debug": "^4.1.8",
+    "@types/escape-html": "^1.0.2",
+    "@types/fill-range": "^7.0.0",
+    "@types/function-bind": "^1.1.7",
+    "@types/glob-parent": "^5.1.1",
+    "@types/has": "^1.0.0",
+    "@types/is-core-module": "^2.2.0",
+    "@types/is-glob": "^4.0.2",
+    "@types/is-number": "^7.0.3",
+    "@types/lodash": "^4.14.198",
+    "@types/lodash-es": "^4.17.9",
+    "@types/merge2": "^1.4.1",
+    "@types/micromatch": "^4.0.2",
+    "@types/ms": "^0.7.31",
+    "@types/normalize-path": "^3.0.0",
+    "@types/path-parse": "^1.0.19",
+    "@types/picomatch": "^2.3.0",
+    "@types/resolve": "^1.20.2",
+    "@types/run-parallel": "^1.1.0",
+    "@types/to-regex-range": "^5.0.1",
+    "@types/webpack": "^5.28.2",
+    "@types/webpack-sources": "^3.2.0"
+  }
+}
