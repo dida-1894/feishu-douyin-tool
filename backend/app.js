@@ -6,6 +6,7 @@ var logger = require('morgan');
 var favicon = require('serve-favicon')
 
 var apiRouter = require('./routes/api');
+var redbookRouter = require('./routes/redbook');
 
 var app = express();
 
@@ -33,6 +34,7 @@ app.all('*', function (req, res, next) {
 app.use(express.static(path.join(__dirname, 'public')));
 // 调用api
 app.use('/api', apiRouter);
+app.use('/redbook', redbookRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
