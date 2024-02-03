@@ -1,10 +1,10 @@
 <script setup>
-import Douyin from './components/Douyin.vue'
+import Home from './components/Home.vue'
 </script>
 
 <template>
   <main>
-    <Douyin />
+    <Home />
   </main>
 </template>
 
