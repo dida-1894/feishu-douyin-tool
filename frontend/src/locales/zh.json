@@ -3,14 +3,23 @@
   "selectGroup": {
     "selectAll": "全选",
     "videoInfo": {
+      "url": "链接",
       "type": "类型",
       "title": "标题",
+      "desc": "描述内容",
       "uploader": "博主",
+      "nickname": "博主",
+      "userAvatar": "博主头像",
+      "tags": "标签",
       "releaseTime": "发布时间",
       "collectionCount": "收藏量",
       "likeCount": "点赞量",
       "shareCount": "转发量",
       "commentCount": "评论量",
+      "followsCount": "关注数",
+      "fansCount": "粉丝数",
+      "interactionCount": "互动数",
+      "gender": "性别",
       "videoUrl": "视频地址",
       "videoCover": "视频封面",
       "musicUrl": "配乐地址",
@@ -18,8 +27,13 @@
       "signature": "博主签名",
       "userhome": "用户主页",
       "videoId": "视频id",
+      "noteId": "笔记id",
       "images": "图片列表",
-      "fetchDataTime": "数据获取时间"
+      "imageNoWater": "去水印图片",
+      "noteCover": "笔记封面",
+      "ipLocation": "归属地",
+      "fetchDataTime": "数据获取时间",
+      "msg" : "错误信息"
     }
   },
   "alerts": {

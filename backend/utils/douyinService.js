@@ -76,9 +76,9 @@ async function GetInfo(item_ids, dycookie, getXB) {
         const cleanedDesc = desc.replaceAll(invalid, repWith);
 
         const res = {
-            type,
-            desc: cleanedDesc,
             url,
+            type,
+            title: cleanedDesc,
             videoUrl: url,
             videoCover,
             musicUrl: music.play_url.uri,
@@ -90,7 +90,11 @@ async function GetInfo(item_ids, dycookie, getXB) {
             videoId: aweme_id,
             images,
             statistics,
-            createTime: aweme_detail.create_time
+            releaseTime: aweme_detail.create_time * 1000,
+            collectionCount: Number(statistics.collect_count) ,
+            likeCount: Number(statistics.digg_count),
+            shareCount: Number(statistics.share_count),
+            commentCount: Number(statistics.comment_count),
         };
         // console.log(res)
         return res;
