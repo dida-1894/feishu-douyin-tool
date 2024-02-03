@@ -18,7 +18,7 @@ router.post('/getNoteList', async function(req, res, next) {
         // 如果dycookie不存在或无法解析rs
         const allEmpty = Object.values(xhsCookies).every(value => value === '');
         if (allEmpty) {
-            res.status(400).send({code:400, data: null, msg: '提供cookies参数缺失'})
+            res.send({code:400, data: null, msg: '提供cookies参数缺失'})
             return;
         }
 
@@ -65,7 +65,7 @@ router.post('/getProfileInfo', async function(req, res, next) {
         // 如果dycookie不存在或无法解析rs
         const allEmpty = Object.values(xhsCookies).every(value => value === '');
         if (allEmpty) {
-            res.status(400).send({code:400, data: null, msg: '提供cookies参数缺失'})
+            res.send({code:400, data: null, msg: '提供cookies参数缺失'})
             return;
         }
 

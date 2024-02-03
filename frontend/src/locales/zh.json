@@ -1,5 +1,5 @@
 {
-  "title":"抖音数据获取", 
+  "title":"抖音、小红书数据获取", 
   "selectGroup": {
     "selectAll": "全选",
     "videoInfo": {
@@ -41,6 +41,7 @@
     "selectGroupFieldTip": "插件可自动创建所选字段。如需映射，请确保多维表格中的字段名称和选项名称一致，建议“博主”字段类型为文本，“xx量”字段类型为数字， “xx时间”字段为日期。"
   },
   "labels": {
+    "dataType": "获取数据类型",
     "link": "链接所在列",
     "cookie": "ttwid Cookie",
     "xhsCookie": "Cookie",
@@ -53,6 +54,7 @@
     "17": "类型校验失败：类型不是附件"
   },
   "placeholder": {
+    "dataType": "获取要获取的数据类型",
     "link": "请选择视频链接对应的字段列",
     "interCount": "请选择所有需要计算的字段列",
     "cookie": "请参照说明文档输入 cookie",

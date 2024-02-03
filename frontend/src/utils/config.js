@@ -35,24 +35,29 @@ export const config = {
         fetchDataTime: { key: "fetchDataTime", zh: "数据获取时间", en: "Fetch Data Time", type: FieldType.DateTime },
         msg: { key: "msg", zh: "错误信息", en: "Error Message", type: FieldType.Text }
     },
-    douyinFields: [
-        'type',
-        'title',
-        'nickname',
-        'releaseTime',
-        'collectionCount',
-        'likeCount',
-        'shareCount',
-        'commentCount',
-        'videoUrl',
-        'videoCover',
-        'musicUrl',
-        'musicTitle',
-        'signature',
-        'userhome',
-        'videoId',
-        'images',
-        'msg',
-        'fetchDataTime'
+    dataType: [
+        {
+            label: '获取抖音作品数据', 
+            value: 'douyinDetail', 
+            path: '/api',
+            canChooseField: [ 'type', 'title', 'nickname', 'releaseTime','collectionCount', 'likeCount', 'shareCount', 'commentCount', 
+                'videoUrl', 'videoCover', 'musicUrl', 'musicTitle', 'signature', 'userhome', 'videoId', 'images', 'msg', 'fetchDataTime'
+            ],
+        },
+        {
+            label: '获取小红书作品数据', 
+            value: 'redbookNoteInfo', 
+            path: '/redbook/getNoteInfo',
+            canChooseField: [ "url", "type", "title", "userhome", "nickname", "userAvatar", "desc", "likeCount", "collectionCount", "commentCount", 
+                "shareCount", "videoUrl", "releaseTime", "noteId", "images", "imageNoWater", "noteCover", 'fetchDataTime'
+            ],
+        },
+        {
+            label: '获取小红书作者数据', 
+            value: 'redbookProfileInfo', 
+            path: '/redbook/getProfileInfo',
+            canChooseField: ['userhome', 'nickname', 'userAvatar', 'signature', 'followsCount', 'fansCount', 'interactionCount', 'ipLocation', 'gender', 'fetchDataTime'],
+        }
     ],
+    doc: "https://aigccamp.feishu.cn/wiki/LvQRwI1A4iYtnMkOBtZc2zfsnMd"
 }

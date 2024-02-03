@@ -10,6 +10,13 @@
       
     </div>
 
+    <!-- 链接所在列 -->
+    <el-form-item style="margin-top: 40px;" :label="$t('labels.dataType')" size="large" required>
+      <el-select v-model="dataType" :placeholder="$t('placeholder.dataType')" style="width: 100%">
+        <el-option v-for="meta in canChooseDateType" :key="meta.value" :label="meta.label" :value="meta" />
+      </el-select>
+    </el-form-item>
+
     <!-- cookie 输入框 -->
     <el-form-item style="margin-top: 20px;" :label="$t('labels.cookie')" size="large" required>
       <el-input v-model="cookie" type="text" :placeholder="$t('placeholder.cookie')"></el-input>
@@ -52,32 +59,18 @@ import  { completeMappedFields, getCellValueByCell, setRecord, addRecords } from
 import { config } from '../utils/config';
 import {i18n} from '../locales/i18n.js'
 
-
-const douyinFields = [
-  'type',
-  'title',
-  'nickname',
-  'releaseTime',
-  'collectionCount',
-  'likeCount',
-  'shareCount',
-  'commentCount',
-  'videoUrl',
-  'videoCover',
-  'musicUrl',
-  'musicTitle',
-  'signature',
-  'userhome',
-  'videoId',
-  'images',
-  'msg',
-  'fetchDataTime'
-];
-
 // -- 数据区域
 const { t } = useI18n();
 const lang = i18n.global.locale;
-// const lang = await bitable.bridge.getLanguage();
+
+const canChooseDateType = ref(config.dataType)
+const dataType = ref(config.dataType[0])
+const canChooseField = computed(() => dataType.value.canChooseField)
+// 可选择字段展示map
+const fieldsToMap = computed(() => canChooseField.value.map(field => ({ label: field, name: config.feilds[field][lang]})));
+// 已选择字段
+const checkedFieldsToMap = ref(canChooseField.value)   // 默认的to-map的字段
+
 const fieldListSeView = ref([])
 const linkFieldId = ref('')  // 链接字段Id
 
@@ -85,12 +78,6 @@ const isWritingData = ref(false)
 // 是否全选
 const checkAllToMap = ref(false)
 const isIndeterminateToMap = ref(true)
-// 可选择字段
-const canChooseField = ref(douyinFields)
-// 可选择字段展示map
-const fieldsToMap = computed(() => canChooseField.value.map(field => ({ label: field, name: config.feilds[field][lang]})));
-// 已选择字段
-const checkedFieldsToMap = ref(canChooseField.value)   // 默认的to-map的字段
 const cookie = ref('')
 
 const issubmitAbled = computed(() => {
@@ -140,16 +127,20 @@ const writeData = async () => {
     try {
       console.log("writeData() >> recordId", recordId)
 
-      var noteLink = await getCellValueByCell(table, recordId, linkFieldId.value)
-      if (!noteLink) {
+      var link = await getCellValueByCell(table, recordId, linkFieldId.value)
+      if (!link) {
         throw new Error(t('errorTip.emptyNoteLink'));
       }
 
-      console.log("writeData() >> noteLink", noteLink)
-      var infoData = await getDateByUrl(noteLink);
+      console.log("writeData() >> noteLink", link)
+      var infoData = await getDateByUrl(link, dataType.value);
 
       console.log("writeData() >> infoData", infoData)
-      await setRecord(table, recordId, infoData, mappedFields);
+      if (Array.isArray(infoData)) {
+        await addRecords(table, infoData, mappedFieldIds);
+      } else {
+        await setRecord(table, recordId, infoData, mappedFields);
+      }
     } catch (err) {
       console.error(err)
       await bitable.ui.showToast({
@@ -172,17 +163,8 @@ const writeData = async () => {
 /*
 * 请求接口获取数据
 */
-const getDateByUrl = async (noteLink) => {
-  var url = `${config.serverHost}/api`;
-  var dyCookie = {
-        "ttwid": cookie.value
-  }
-
-  var data = {
-    'url': noteLink,
-    'dyCookie': dyCookie
-  };
-
+const getDateByUrl = async (link, dataType) => {
+  const { url, data } = getQueryParams(link, dataType);
   var requestConfig = {
     method: 'post',
     url: url,
@@ -197,6 +179,30 @@ const getDateByUrl = async (noteLink) => {
     return {code: -1, msg: res.data?.msg ?? '获取数据错误'}
 };  
 
+const getQueryParams = (link, dataType) => {
+  let data = {}
+  if (dataType.value == 'douyinDetail') {
+      data = {
+        'url': link,
+        'dyCookie': {
+          "ttwid": cookie.value
+        }
+      };
+  } else {
+    data = {
+        'url': link,
+        "xhsCookies": {
+          "a1": "18d5e3d55cd9klugpva1b04l9rnfl2n4kownwtoqu30000300056",
+          "web_session": "0400697684d54f2a812685a28c374bd9d920a0"
+        }
+    }
+  }
+  return {
+    url: `${config.serverHost}${dataType.path}`,
+    data: data
+  }
+}
+
 // Map==全选事件
 const handlecheckAllToMapChange = (val) => {
   const data = JSON.parse(JSON.stringify(fieldsToMap.value))
@@ -210,6 +216,7 @@ const handlecheckAllToMapChange = (val) => {
     checkedFieldsToMap.value = []
   }
   isIndeterminateToMap.value = false
+  console.log('checkedFieldsToMap:', checkedFieldsToMap.value)
 }
 // Map==字段选择事件
 const handleCheckedFieldsToMapChange = (value) => {

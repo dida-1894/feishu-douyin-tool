@@ -136,7 +136,11 @@ function formatNote(note) {
 function handleProfileInfo(userId, htmlText) {
     const userhome = "https://www.xiaohongshu.com/user/profile/" + userId
     const infoRegex = /<script>window.__INITIAL_STATE__=(.*?)<\/script>/;
-    let info = htmlText.match(infoRegex)[1];
+    let info = htmlText.match(infoRegex);
+    if (info.length < 2) {
+        throw new Error('请求用户主页失败');
+    }
+    info = info[1];
     info = info.replace(/undefined/g, 'null');
     info = JSON.parse(info);
     let userPageData = info.user.userPageData;
@@ -145,7 +149,7 @@ function handleProfileInfo(userId, htmlText) {
     let userAvatar = userPageData.basicInfo.images;
     // Assuming that decodedUniChars is a function in your environment
     userAvatar = decodedUniChars(userAvatar); 
-    let desc = userPageData.basicInfo.desc;
+    let signature = userPageData.basicInfo.desc;
 
     console.log(JSON.stringify(userPageData));
 
@@ -164,7 +168,7 @@ function handleProfileInfo(userId, htmlText) {
         }
     }
 
-    return { userhome, nickname, userAvatar, desc, followsCount, fansCount, interactionCount, ipLocation, gender, tags};
+    return { userhome, nickname, userAvatar, signature, followsCount, fansCount, interactionCount, ipLocation, gender, tags};
 }
 
 
@@ -226,7 +230,7 @@ function handleNoteInfo(data) {
         tags: tags,
         releaseTime: upload_time,
         noteId: noteId,
-        imageList: urlList,
+        images: urlList,
         imageNoWater: processUrls(urlList),
         noteCover: urlList?.[0],
     };
