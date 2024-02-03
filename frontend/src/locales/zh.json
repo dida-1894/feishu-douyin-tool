@@ -58,6 +58,7 @@
     "link": "请选择视频链接对应的字段列",
     "interCount": "请选择所有需要计算的字段列",
     "cookie": "请参照说明文档输入 cookie",
+    "xhsCookie": "请参照说明文档输入 cookie",
     "xSCommon": "请参照说明文档输入 X-S-Common"
   },
   "detailMode": "开启详细模式",

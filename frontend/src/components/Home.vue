@@ -17,10 +17,14 @@
       </el-select>
     </el-form-item>
 
+    <!-- xhsCookie 输入框 -->
+    <el-form-item style="margin-top: 20px;" :label="$t('labels.xhsCookie')" size="large" required v-if="dataType.value != 'douyinDetail'">
+      <el-input v-model="xhsCookie" type="text" :placeholder="$t('placeholder.xhsCookie')"></el-input>
+    </el-form-item>
+
     <!-- cookie 输入框 -->
-    <el-form-item style="margin-top: 20px;" :label="$t('labels.cookie')" size="large" required>
+    <el-form-item style="margin-top: 20px;" :label="$t('labels.cookie')" size="large" required v-if="dataType.value == 'douyinDetail'">
       <el-input v-model="cookie" type="text" :placeholder="$t('placeholder.cookie')"></el-input>
-      
     </el-form-item>
     
 
@@ -57,7 +61,8 @@ import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import  { completeMappedFields, getCellValueByCell, setRecord, addRecords } from '../utils/tableUtils';
 import { config } from '../utils/config';
-import {i18n} from '../locales/i18n.js'
+import {i18n} from '../locales/i18n.js';
+import { watch } from 'vue';
 
 // -- 数据区域
 const { t } = useI18n();
@@ -70,6 +75,9 @@ const canChooseField = computed(() => dataType.value.canChooseField)
 const fieldsToMap = computed(() => canChooseField.value.map(field => ({ label: field, name: config.feilds[field][lang]})));
 // 已选择字段
 const checkedFieldsToMap = ref(canChooseField.value)   // 默认的to-map的字段
+watch(canChooseField, () => {
+  checkedFieldsToMap.value = canChooseField.value;
+});
 
 const fieldListSeView = ref([])
 const linkFieldId = ref('')  // 链接字段Id
@@ -79,9 +87,11 @@ const isWritingData = ref(false)
 const checkAllToMap = ref(false)
 const isIndeterminateToMap = ref(true)
 const cookie = ref('')
+const xhsCookie = ref('')
 
 const issubmitAbled = computed(() => {
-  return linkFieldId.value && checkedFieldsToMap.value.length && cookie.value
+  return linkFieldId.value && checkedFieldsToMap.value.length && 
+      ((dataType.value.value == "douyinDetail" && cookie.value) || (dataType.value.value != "douyinDetail" && xhsCookie.value))
 })  // 是否允许提交，及必选字段是否都填写
 
 // 字段在表格对应的列
@@ -111,7 +121,8 @@ const writeData = async () => {
   // ## model2: 交互式选择记录 
   const recordList = await bitable.ui.selectRecordIdList(tableId, viewId);
 
-  localStorage.setItem('cookie', cookie.value)   // string 类型
+  localStorage.setItem('cookie', cookie.value)   // string 类型  
+  localStorage.setItem('xhsCookie', xhsCookie.value)   // string 类型
 
   // 错误处理，链接字段格式错误，应为文本类型
   const linkField = await table.getFieldMetaById(linkFieldId.value)
@@ -189,12 +200,10 @@ const getQueryParams = (link, dataType) => {
         }
       };
   } else {
+    let { a1, web_session} = parseCookie(xhsCookie.value)
     data = {
         'url': link,
-        "xhsCookies": {
-          "a1": "18d5e3d55cd9klugpva1b04l9rnfl2n4kownwtoqu30000300056",
-          "web_session": "0400697684d54f2a812685a28c374bd9d920a0"
-        }
+        "xhsCookies": { a1, web_session}
     }
   }
   return {
@@ -202,6 +211,22 @@ const getQueryParams = (link, dataType) => {
     data: data
   }
 }
+
+
+function parseCookie(cookie) {
+    let cookieObj = {};
+    let cookieArr = cookie.split('; ');
+
+    for (let i = 0; i < cookieArr.length; i++) {
+        let cookiePair = cookieArr[i].split('=');
+        cookieObj[decodeURIComponent(cookiePair[0])] = decodeURIComponent(cookiePair[1]);
+    }
+
+    console.log(cookieObj);
+
+    return cookieObj;
+}
+
 
 // Map==全选事件
 const handlecheckAllToMapChange = (val) => {
@@ -237,6 +262,9 @@ onMounted(async () => {
 
   if (localStorage.getItem('cookie') !== null) {  // string 类型
     cookie.value = localStorage.getItem('cookie')
+  }
+  if (localStorage.getItem('xhsCookie') !== null) {  // string 类型
+    xhsCookie.value = localStorage.getItem('xhsCookie')
   }
 });
     
