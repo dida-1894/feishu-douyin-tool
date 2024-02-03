@@ -6,6 +6,8 @@
       "type": "Type",
       "title": "Title",
       "uploader": "Uploader",
+      "nickname": "Nickname",
+      "userAvatar": "User Avatar",
       "releaseTime": "Release Time",
       "collectionCount": "Collection Count",
       "likeCount": "Like Count",
@@ -32,10 +34,10 @@
     "xSCommon": "X-S-Common"
   },
   "checks": {
-    "number": "Type Check Failed: Type is not a number",
-    "text": "Type Check Failed: Type is not text",
-    "datetime": "Type Check Failed: Type is not a date",
-    "attachment": "Type Check Failed: Type is not an attachment"
+    "2": "Type Check Failed: Type is not a number",
+    "1": "Type Check Failed: Type is not text",
+    "5": "Type Check Failed: Type is not a date",
+    "17": "Type Check Failed: Type is not an attachment"
   },
   "placeholder": {
     "link": "Please select the field column corresponding to the video link",
