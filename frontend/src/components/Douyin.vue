@@ -48,8 +48,6 @@ import { bitable, FieldType } from '@lark-base-open/js-sdk';
 import { useI18n } from 'vue-i18n';
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
-import configUtils from '../utils/configUtils';
-import qs from 'qs';
 
 
 const douyinFields = [
@@ -89,8 +87,6 @@ const fieldsToMap = computed(() => canChooseField.value.map(field => ({ label: f
 // 已选择字段
 const checkedFieldsToMap = ref(canChooseField.value)   // 默认的to-map的字段
 const cookie = ref('')
-const isForcedEnd = ref(false)
-const errorCount = ref(0)
 
 const issubmitAbled = computed(() => {
   return linkFieldId.value && checkedFieldsToMap.value.length && cookie.value
@@ -103,14 +99,12 @@ const mappedFieldIds = ref({})
 // -- 核心算法区域
 // --001== 写入数据
 const writeData = async () => {
-  if (isWritingData.value) {
-    isForcedEnd.value = true
-  }
+  var errorCount = 0;
   isWritingData.value = true
 
-  // 获取字段数据Ids object类型，匹配已有的字段，创建缺少的字段
-  // @status {mappedFieldIds, isWritingData}  表示是命令性质的方法，改变mappedFieldIds对象的状态
-  const mappedFields = await completeMappedFieldIdsValue() 
+  // 获取字段所在列，匹配已有的字段，创建缺少的字段
+  const mappedFields = await completeMappedFields(checkedFieldsToMap.value) 
+  mappedFieldIds.value = mappedFields
   
   // 加载bitable实例
   const { tableId, viewId } = await bitable.base.getSelection();
@@ -118,10 +112,10 @@ const writeData = async () => {
   const view = await table.getViewById(viewId);
 
   // ## mode1: 全部记录
-  // const RecordList = await view.getVisibleRecordIdList()
+  // const recordList = await view.getVisibleRecordIdList()
 
   // ## model2: 交互式选择记录 
-  const RecordList = await bitable.ui.selectRecordIdList(tableId, viewId);
+  const recordList = await bitable.ui.selectRecordIdList(tableId, viewId);
 
   localStorage.setItem('cookie', cookie.value)   // string 类型
 
@@ -133,73 +127,47 @@ const writeData = async () => {
       message: `[${linkField.name}] ${t('errorTip.errorLinkType')}`
     })
     isWritingData.value = false
-    return
   }
 
-  for (let recordId of RecordList) {
-    console.log("writeData() >> recordId", recordId)
+  for (let recordId of recordList) {
+    try {
+      console.log("writeData() >> recordId", recordId)
 
-    let noteLink = await getCellValueByRFIDS(recordId, linkFieldId.value)
-    if (!noteLink) {
+      let noteLink = await getCellValueByCell(table, recordId, linkFieldId.value)
+      if (!noteLink) {
+        throw new Error(t('errorTip.emptyNoteLink'));
+      }
+
+      console.log("writeData() >> noteLink", noteLink)
+      let infoData = await getDateByUrl(noteLink);
+
+      console.log("writeData() >> infoData", infoData)
+      await setRecord(table, recordId, infoData, mappedFields);
+    } catch (err) {
+      console.error(err)
       await bitable.ui.showToast({
         toastType: 'warning',
-        message: t('errorTip.emptyNoteLink')
+        message: err.message
       })
-      errorCount.value ++
-      continue;
+      errorCount += 1;
     }
-
-    console.log("writeData() >> noteLink", noteLink)
-    let infoData = await getDateByUrl(noteLink);
-
-    console.log("writeData() >> infoData", infoData)
-    await setRecord(table, recordId, infoData, mappedFields);
   }
 
   isWritingData.value = false
   await bitable.ui.showToast({
     toastType: 'success',
-    message: `${t('finishTip')} ${errorCount.value}`
+    message: `${t('finishTip')} ${errorCount}`
   })
 
 }
 
-
-
-
-
-// 获取所勾选字段的字段Id
-const getSelectedFieldsId = (fieldList, checkedFields) => {
-  const mappedFields = {};
-  for (let field of checkedFields) {
-    // 查找与checkedFields相匹配的fieldListSeView项目
-    const foundField = fieldList.find(f => f.name ===  t(`selectGroup.videoInfo.${field}`));
-
-    if ( ( field.endsWith('量') || field.endsWith('Count') ) && foundField && foundField.type !== 2)
-      return ` [${t(`selectGroup.videoInfo.${field}`)}] ${t(`checks.number`)}` 
-    else if (field == t('selectGroup.videoInfo.uploader') && foundField && foundField.type !== 1)
-      return ` [${t(`selectGroup.videoInfo.${field}`)}] ${t(`checks.text`)}`
-    else if (field == t('selectGroup.videoInfo.releaseTime') && foundField && foundField.type !== 5)
-      return ` [${t(`selectGroup.videoInfo.${field}`)}] ${t(`checks.datetime`)}`
-    else if (field == t('selectGroup.videoInfo.lastUpdateTime') && foundField && foundField.type !== 5)
-      return ` [${t(`selectGroup.videoInfo.${field}`)}] ${t(`checks.datetime`)}`
-
-    
-    // 如果找到了相应的项目，就使用其id，否则设置为-1
-    mappedFields[field] = foundField ? foundField.id : -1;
-  }
-    
-
-
-  return mappedFields;
-} 
 
 /*
 * 请求接口获取数据
 */
 const getDateByUrl = async (noteLink) => {
   
-  var url = `${configUtils.serverHost}/api`;
+  var url = `/api`;
   let dyCookie = parseCookies(cookie.value);
 
   var data = {
@@ -218,80 +186,11 @@ const getDateByUrl = async (noteLink) => {
   if (res.data.code === 0)
     return res.data.data
   else 
-    return {code: -1, msg: "获取数据错误"}
+    return {code: -1, msg: res.data?.msg ?? '获取数据错误'}
 };  
 
-// --003== 创建 mappedFieldIds 中 value 为 -1 的字段
-const createFields = async (mappedFields) => {
-  const selection = await bitable.base.getSelection()
-  const table = await bitable.base.getTableById(selection.tableId)
-
-  for (let key in mappedFields) {
-    if (mappedFields[key] === -1) {
-      switch (key) {
-        case "type":  // 类型
-        case "title":  // 视频名称
-        case "uploader": // 作者名
-        case "videoUrl":
-        case "videoCover":
-        case "musicUrl":
-        case "musicTitle":
-        case "signature":
-        case "userhome":
-        case "videoId":
-        case "images":
-          mappedFields[key] = await table.addField({
-            type: FieldType.Text,
-            name: t(`selectGroup.videoInfo.${key}`),
-          })
-          break;
-        case "releaseTime":
-        case "lastUpdateTime":
-        case "fetchDataTime":
-          mappedFields[key] = await table.addField({
-            type: FieldType.DateTime,
-            name: t(`selectGroup.videoInfo.${key}`),
-          })
-          break;
-        case "danmuCount":
-        case "coinCount":
-        case "viewCount":
-        case "collectionCount":
-        case "likeCount":
-        case "commentCount":  // 评论量
-        case "totalInterCount":  // 总互动量
-        case "shareCount":
-          mappedFields[key] = await table.addField({
-            type: FieldType.Number,
-            name: t(`selectGroup.videoInfo.${key}`),
-          })
-          break;
-        case "commentWc":
-        case "danmuWc":
-          mappedFields[key] = await table.addField({
-            type: FieldType.Attachment,
-            name: t(`selectGroup.videoInfo.${key}`),
-          })
-          break;
-        default:
-          mappedFields[key] = await table.addField({
-            type: FieldType.Text,
-            name: t(`selectGroup.videoInfo.${key}`),
-          })
-          break;
-      }
-    }
-  }
-
-  console.log(mappedFields)
-
-  return mappedFields;
-}
-
-// --004== 依据 recordId & filedId 获取 cell 值
-const getCellValueByRFIDS = async (recordId, fieldId) => {
-  const selection = await bitable.base.getSelection();
-  const table = await bitable.base.getTableById(selection.tableId);
+// 依据 recordId & filedId 获取 cell 值
+const getCellValueByCell = async (table, recordId, fieldId) => {
   const cellValue = await table.getCellValue(fieldId, recordId)
 
   if (typeof cellValue == 'object')
@@ -300,27 +199,51 @@ const getCellValueByRFIDS = async (recordId, fieldId) => {
   return cellValue
 }
 
-/** --006== 补全mappedFieldIds对象的值，使得拿到所有字段数据Ids object类型
+/**
  * 匹配已有的字段，创建缺少的字段
- * @status {mappedFieldIds, isWritingData}  表示是命令性质的方法，改变mappedFieldIds对象的状态
  */ 
-const completeMappedFieldIdsValue = async () => {
+const completeMappedFields = async (checkedFieldsToMap) => {
+  const selection = await bitable.base.getSelection()
+  const table = await bitable.base.getTableById(selection.tableId)
+  const view = await table.getViewById(selection.viewId)
+  const fieldMetaList = await view.getFieldMetaList()
   // 匹配已有的字段
-  const mappedFields = getSelectedFieldsId(fieldListSeView.value, checkedFieldsToMap.value)
+  const mappedFields = getSelectedFieldsId(fieldMetaList, checkedFieldsToMap)
   console.log("writeData() >> original mappedFields", mappedFields)
-  if (typeof mappedFields == 'string') {// 错误处理，提示格式错误 
-    await bitable.ui.showToast({
-      toastType: 'warning',
-      message: mappedFields
-    })
-    isWritingData.value = false
-    return
+
+  for (let key in mappedFields) {
+    if (mappedFields[key] === -1) {
+      let type = getFieldTypeByKey(key);
+      mappedFields[key] = await table.addField({
+        type: type,
+        name: t(`selectGroup.videoInfo.${key}`),
+      })
+    }
   }
 
-  // 创建缺少的字段
-  mappedFieldIds.value = mappedFields
-  return await createFields(mappedFields);
+  console.log("writeData() >> created mappedFields", mappedFields)
+  return mappedFields;
 }
+
+// 获取所勾选字段的字段Id
+const getSelectedFieldsId = (fieldList, checkedFields) => {
+  const mappedFields = {};
+  for (let field of checkedFields) {
+    // 查找与checkedFields相匹配的fieldListSeView项目
+    const foundField = fieldList.find(f => f.name ===  t(`selectGroup.videoInfo.${field}`));
+
+    const feildType = getFieldTypeByKey(field);
+    if (foundField && foundField.type !== feildType) {
+      const checkFeild = `checks.${feildType}`
+      throw new Error(` [${t(`selectGroup.videoInfo.${field}`)}] ${t(checkFeild)}`)
+    }
+    
+    // 如果找到了相应的项目，就使用其id，否则设置为-1
+    mappedFields[field] = foundField ? foundField.id : -1;
+  }
+
+  return mappedFields;
+} 
 
 /**
  * --009== 获取并设置特定 table 的特定 record 的特定字段集合的 Value
@@ -357,7 +280,6 @@ const addRecord = async (table, infoData, mappedFieldIdMap) => {
  * @param {object} mappedFieldIdMap 字段对应列id
  */
 const getRecordFields = (infoData, mappedFields) => {
-  debugger
   let recordFields = {}
   let key = ''
   let value = ''
@@ -372,8 +294,9 @@ const getRecordFields = (infoData, mappedFields) => {
     else
       value = infoData[field]
 
-
-    recordFields[key] = value
+    if (value) {
+      recordFields[key] = value
+    }
   }
   return recordFields
 }
@@ -408,6 +331,41 @@ const parseCookies = (ttwidCookie) => {
   return {
         "ttwid": ttwidCookie
   };
+}
+
+function getFieldTypeByKey(key) {
+    switch (key) {
+        case "type":  // 类型
+        case "title":  // 视频名称
+        case "uploader": // 作者名
+        case "videoUrl":
+        case "videoCover":
+        case "musicUrl":
+        case "musicTitle":
+        case "signature":
+        case "userhome":
+        case "videoId":
+        case "images":
+            return FieldType.Text;
+        case "releaseTime":
+        case "lastUpdateTime":
+        case "fetchDataTime":
+            return FieldType.DateTime;
+        case "danmuCount":
+        case "coinCount":
+        case "viewCount":
+        case "collectionCount":
+        case "likeCount":
+        case "commentCount":  // 评论量
+        case "totalInterCount":  // 总互动量
+        case "shareCount":
+            return FieldType.Number;
+        case "commentWc":
+        case "danmuWc":
+            return FieldType.Attachment;
+        default:
+            return FieldType.Text;
+    }
 }
 
 onMounted(async () => {
