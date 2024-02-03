@@ -57,6 +57,12 @@ export const config = {
             value: 'redbookProfileInfo', 
             path: '/redbook/getProfileInfo',
             canChooseField: ['userhome', 'nickname', 'userAvatar', 'signature', 'followsCount', 'fansCount', 'interactionCount', 'ipLocation', 'gender', 'fetchDataTime'],
+        },
+        {
+            label: '获取小红书作者全部笔记', 
+            value: 'redbookNoteList', 
+            path: '/redbook/getNoteList',
+            canChooseField: ["url", "type", "title", "likeCount", "nickname", "userhome", "userAvatar", "noteCover", "noteId", 'fetchDataTime'],
         }
     ],
     doc: "https://aigccamp.feishu.cn/wiki/LvQRwI1A4iYtnMkOBtZc2zfsnMd"

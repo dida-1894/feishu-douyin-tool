@@ -137,7 +137,7 @@ const writeData = async () => {
 
       console.log("writeData() >> infoData", infoData)
       if (Array.isArray(infoData)) {
-        await addRecords(table, infoData, mappedFieldIds);
+        await addRecords(table, infoData, mappedFields);
       } else {
         await setRecord(table, recordId, infoData, mappedFields);
       }

@@ -283,9 +283,7 @@ async function getAllNoteList(userId, xhsCookies) {
         cursor = batchResult.cursor;
         has_more = batchResult.has_more;
     } while (has_more);
-    return {
-        cursor, notes, has_more
-    }
+    return notes
 }
 
 async  function getProfileInfo(userId, xhsCookies) {
