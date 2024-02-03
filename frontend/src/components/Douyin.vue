@@ -48,6 +48,7 @@ import { bitable, FieldType } from '@lark-base-open/js-sdk';
 import { useI18n } from 'vue-i18n';
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
+import configUtils from '../utils/configUtils';
 import qs from 'qs';
 
 
@@ -198,7 +199,7 @@ const getSelectedFieldsId = (fieldList, checkedFields) => {
 */
 const getDateByUrl = async (noteLink) => {
   
-  var url = `http://127.0.0.1:4000/api`;
+  var url = `${configUtils.serverHost}/api`;
   let dyCookie = parseCookies(cookie.value);
 
   var data = {
