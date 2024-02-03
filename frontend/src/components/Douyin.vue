@@ -88,7 +88,7 @@ const isIndeterminateToMap = ref(true)
 // 可选择字段
 const canChooseField = ref(douyinFields)
 // 可选择字段展示map
-const fieldsToMap = computed(() => canChooseField.value.map(field => ({ label: field, name: config.feilds[field].lang})));
+const fieldsToMap = computed(() => canChooseField.value.map(field => ({ label: field, name: config.feilds[field][lang]})));
 // 已选择字段
 const checkedFieldsToMap = ref(canChooseField.value)   // 默认的to-map的字段
 const cookie = ref('')

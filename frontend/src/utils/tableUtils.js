@@ -8,7 +8,6 @@ const getSelectedFieldsId = (fieldMetaList, checkedFields) => {
     const mappedFields = {};
     for (let field of checkedFields) {
         // 查找与checkedFields相匹配的fieldListSeView项目
-        debugger
         const foundField = fieldMetaList.find(f => f.name === config.feilds[field][lang]);
 
         const feildType = getFieldTypeByKey(field);
