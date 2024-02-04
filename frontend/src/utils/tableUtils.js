@@ -1,7 +1,8 @@
 import { bitable, FieldType } from "@lark-base-open/js-sdk";
 import { config } from './config';
+import {i18n} from '../locales/i18n.js';
 
-const lang = await bitable.bridge.getLanguage();
+const lang = i18n.global.locale;
 
 // 获取所勾选字段的字段Id
 const getSelectedFieldsId = (fieldMetaList, checkedFields) => {
