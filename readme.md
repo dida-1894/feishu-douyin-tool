@@ -1,4 +1,4 @@
-<h1 align="center">✨ 获取抖音数据保存到飞书多维表格 ✨</h1>
+<h1 align="center">✨ 获取抖音、小红书数据保存到飞书多维表格 ✨</h1>
 
 # 使用效果
 ![使用效果](/use-doc/使用示例.gif)
@@ -12,7 +12,7 @@ https://www.douyin.com/video/7304875720877034803
 https://v.douyin.com/iL7oNdRv/
 ```
 
-### 2. 打开多微表格插件，找到抖音小助手
+### 2. 运行程序
 
 可使用Replit 一键部署：https://replit.com/@yib360/feishu-douyin-tool
 
