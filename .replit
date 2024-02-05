@@ -12,3 +12,4 @@ language = "nodejs"
 run = ["sh", "-c", "npm run build && npm run start"]
 deploymentTarget = "cloudrun"
 ignorePorts = false
+build = ["sh", "-c", "npm install"]
