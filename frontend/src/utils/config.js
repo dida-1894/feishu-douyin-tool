@@ -39,7 +39,7 @@ export const config = {
         {
             label: '获取抖音作品数据', 
             value: 'douyinDetail', 
-            path: '/api',
+            path: '/douyin/getVideoInfo',
             canChooseField: [ 'type', 'title', 'nickname', 'releaseTime','collectionCount', 'likeCount', 'shareCount', 'commentCount', 
                 'videoUrl', 'videoCover', 'musicUrl', 'musicTitle', 'signature', 'userhome', 'videoId', 'images', 'msg', 'fetchDataTime'
             ],
