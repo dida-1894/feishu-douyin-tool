@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@netlify/functions": "^2.5.1",
     "axios": "^0.26.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
@@ -20,7 +21,8 @@
     "md5": "^2.3.0",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.15",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "serverless-http": "^3.2.0"
   },
   "description": "<img src=\"https://tvax2.sinaimg.cn/large/006908GAly1h1e6e0mjmbj30m217a168.jpg\" alt=\"image\" style=\"zoom:75%;\" />",
   "main": "app.js",
