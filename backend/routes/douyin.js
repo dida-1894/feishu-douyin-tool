@@ -1,11 +1,11 @@
 const express = require('express');
-const { GetID, GetInfo } = require('../utils/douyinService');
+const { GetID, GetInfo } = require('../utils/douyinService.js');
 const getXB = require('../utils/x-bogus.js')
 
 let router = express.Router();
 
 /* 获取API */
-router.post('/', async function(req, res, next) {
+router.post('/getVideoInfo', async function(req, res, next) {
     try {
         // 尝试从cookies中获取并解析dycookie
         let dyCookie;
