@@ -1,7 +1,7 @@
 import { FieldType } from "@lark-base-open/js-sdk";
 
 export const config = {
-    serverHost: 'http://127.0.0.1:4000',
+    serverHost: '',
     feilds: {
         url: { key: "url", zh: "链接", en: "Link", type: FieldType.Text },
         type: { key: "type", zh: "类型", en: "Type", type: FieldType.Text },
