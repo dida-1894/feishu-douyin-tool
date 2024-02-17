@@ -153,9 +153,9 @@ function handleProfileInfo(userId, htmlText) {
 
     console.log(JSON.stringify(userPageData));
 
-    let followsCount = userPageData.interactions[0].count;
-    let fansCount = userPageData.interactions[1].count;
-    let interactionCount = userPageData.interactions[2].count;
+    let followsCount = Number(userPageData.interactions[0].count);
+    let fansCount = Number(userPageData.interactions[1].count);
+    let interactionCount = Number(userPageData.interactions[2].count);
     let ipLocation = userPageData.basicInfo.ipLocation;
     let gender = getGenderWord(userPageData.basicInfo.gender);
     let tagsTemp = info.user.userPageData.tags;
@@ -185,9 +185,12 @@ function handleNoteInfo(data) {
     let comment_count = data.note_card.interact_info.comment_count;
     let share_count = data.note_card.interact_info.share_count;
     let video_addr = '';
+    let videoFile = '';
 
     if (note_type === 'video') {
-        video_addr = 'https://sns-video-bd.xhscdn.com/' + data.note_card.video.consumer.origin_video_key;
+        console.log( JSON.stringify(data));
+        video_addr =  data.note_card.video.media?.stream?.h264?.[0].master_url;
+        videoFile = 'https://sns-video-bd.xhscdn.com/' + data.note_card.video.consumer.origin_video_key;
     }
 
     let image_list = data.note_card.image_list;
@@ -227,6 +230,7 @@ function handleNoteInfo(data) {
         commentCount: comment_count,
         shareCount: share_count,
         videoUrl: video_addr,
+        videoFile: videoFile,
         tags: tags,
         releaseTime: upload_time,
         noteId: noteId,
@@ -263,12 +267,14 @@ async function  getNoteList(userId, xhsCookies, cursor = '') {
             headers: headers,
             params: params
         });
+        // console.log(response);
         let result = response.data.data;
         result.notes = result.notes.map(formatNote);
         // console.log(JSON.stringify(result));
         return result;
     } catch (error) {
-        console.error('Error:', error.message);
+        console.error('Error message:', error.message);
+        console.error('Error:', error);
         throw new Error('请求笔记列表失败');
     };
 }

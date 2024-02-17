@@ -33,7 +33,8 @@ export const config = {
         noteCover: { key: "noteCover", zh: "笔记封面", en: "Note Cover", type: FieldType.Text },
         ipLocation: { key: "ipLocation", zh: "归属地", en: "IP Location", type: FieldType.Text },
         fetchDataTime: { key: "fetchDataTime", zh: "数据获取时间", en: "Fetch Data Time", type: FieldType.DateTime },
-        msg: { key: "msg", zh: "错误信息", en: "Error Message", type: FieldType.Text }
+        msg: { key: "msg", zh: "错误信息", en: "Error Message", type: FieldType.Text },
+        videoFile: { key: "videoFile", zh: "视频文件", en: "Video File", type: FieldType.Text }
     },
     dataType: [
         {
@@ -49,20 +50,20 @@ export const config = {
             value: 'redbookNoteInfo', 
             path: '/redbook/getNoteInfo',
             canChooseField: [ "url", "type", "title", "userhome", "nickname", "userAvatar", "desc", "likeCount", "collectionCount", "commentCount", 
-                "shareCount", "videoUrl", "releaseTime", "noteId", "images", "imageNoWater", "noteCover", 'fetchDataTime'
+                "shareCount", "videoUrl", "releaseTime", "noteId", "images", "noteCover", 'msg', 'fetchDataTime'
             ],
         },
         {
             label: '获取小红书作者数据', 
             value: 'redbookProfileInfo', 
             path: '/redbook/getProfileInfo',
-            canChooseField: ['userhome', 'nickname', 'userAvatar', 'signature', 'followsCount', 'fansCount', 'interactionCount', 'ipLocation', 'gender', 'fetchDataTime'],
+            canChooseField: ['userhome', 'nickname', 'userAvatar', 'signature', 'followsCount', 'fansCount', 'interactionCount', 'ipLocation', 'gender', 'msg', 'fetchDataTime'],
         },
         {
             label: '获取小红书作者全部笔记', 
             value: 'redbookNoteList', 
             path: '/redbook/getNoteList',
-            canChooseField: ["url", "type", "title", "likeCount", "nickname", "userhome", "userAvatar", "noteCover", "noteId", 'fetchDataTime'],
+            canChooseField: ["url", "type", "title", "likeCount", "nickname", "userhome", "userAvatar", "noteCover", "noteId", 'msg', 'fetchDataTime'],
         }
     ],
     doc: "https://aigccamp.feishu.cn/wiki/LvQRwI1A4iYtnMkOBtZc2zfsnMd"
