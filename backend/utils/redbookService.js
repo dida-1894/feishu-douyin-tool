@@ -153,9 +153,9 @@ function handleProfileInfo(userId, htmlText) {
 
     console.log(JSON.stringify(userPageData));
 
-    let followsCount = Number(userPageData.interactions[0].count);
-    let fansCount = Number(userPageData.interactions[1].count);
-    let interactionCount = Number(userPageData.interactions[2].count);
+    let followsCount = parseInt(userPageData.interactions.find(i => i.name === "关注").count);
+    let fansCount = parseInt(userPageData.interactions.find(i => i.name === "粉丝").count);
+    let interactionCount = parseInt(userPageData.interactions.find(i => i.name === "获赞与收藏").count);
     let ipLocation = userPageData.basicInfo.ipLocation;
     let gender = getGenderWord(userPageData.basicInfo.gender);
     let tagsTemp = info.user.userPageData.tags;

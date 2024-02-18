@@ -28,7 +28,7 @@ export const config = {
         userhome: { key: "userhome", zh: "用户主页", en: "User Home", type: FieldType.Text },
         videoId: { key: "videoId", zh: "视频id", en: "Video ID", type: FieldType.Text },
         noteId: { key: "noteId", zh: "笔记id", en: "Note ID", type: FieldType.Text },
-        images: { key: "images", zh: "图片列表", en: "Images", type: FieldType.Text },
+        images: { key: "images", zh: "全部图片", en: "Images", type: FieldType.Text },
         imageNoWater: { key: "imageNoWater", zh: "去水印图片", en: "Image No Water", type: FieldType.Text },
         noteCover: { key: "noteCover", zh: "笔记封面", en: "Note Cover", type: FieldType.Text },
         ipLocation: { key: "ipLocation", zh: "归属地", en: "IP Location", type: FieldType.Text },

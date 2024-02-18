@@ -119,37 +119,10 @@ export async function getCellValueByCell(table, recordId, fieldId) {
 }
 
 export function getFieldTypeByKey(key) {
-    switch (key) {
-        case "type":  // 类型
-        case "title":  // 视频名称
-        case "uploader": // 作者名
-        case "videoUrl":
-        case "videoCover":
-        case "musicUrl":
-        case "musicTitle":
-        case "signature":
-        case "userhome":
-        case "videoId":
-        case "images":
-            return FieldType.Text;
-        case "releaseTime":
-        case "lastUpdateTime":
-        case "fetchDataTime":
-            return FieldType.DateTime;
-        case "danmuCount":
-        case "coinCount":
-        case "viewCount":
-        case "collectionCount":
-        case "likeCount":
-        case "commentCount":  // 评论量
-        case "totalInterCount":  // 总互动量
-        case "shareCount":
-            return FieldType.Number;
-        case "commentWc":
-        case "danmuWc":
-            return FieldType.Attachment;
-        default:
-            return FieldType.Text;
+    let field =  config.feilds[key];
+    if (field && field.type) {
+        return field.type;
     }
+    return FieldType.Text;
 }
 
