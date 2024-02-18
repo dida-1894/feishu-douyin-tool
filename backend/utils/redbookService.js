@@ -190,7 +190,7 @@ function handleNoteInfo(data) {
     if (note_type === 'video') {
         console.log( JSON.stringify(data));
         video_addr =  data.note_card.video.media?.stream?.h264?.[0].master_url;
-        videoFile = 'https://sns-video-bd.xhscdn.com/' + data.note_card.video.consumer.origin_video_key;
+        videoFile = 'https://no996.fun/file/getVideo?url=' + video_addr;
     }
 
     let image_list = data.note_card.image_list;

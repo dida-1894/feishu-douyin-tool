@@ -92,8 +92,8 @@ router.use((err, req, res, next) => {
     // 不要尝试嗅探并覆盖响应的MIME类型
     res.setHeader('X-Content-Type-Options', 'nosniff');
     // 根据错误类型或消息为用户提供不同的反馈
-    if (err.message.includes('无效的URL地址')) {
-        res.status(200).send({code:400, data: null, msg: '提供的URL无效'})
+    if (err.message) {
+        res.status(200).send({code:400, data: null, msg: err.message})
     } else {
         res.status(200).send({code:400, data: null, msg: '服务器内部错误'})
     }
