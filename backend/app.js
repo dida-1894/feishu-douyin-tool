@@ -7,6 +7,7 @@ var favicon = require('serve-favicon')
 
 var douyinRouter = require('./routes/douyin');
 var redbookRouter = require('./routes/redbook');
+var fileRouter = require('./routes/file');
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 调用api
 app.use('/douyin', douyinRouter);
 app.use('/redbook', redbookRouter);
+app.use('/file', fileRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
