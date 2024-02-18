@@ -21,7 +21,7 @@ export const config = {
         interactionCount: { key: "interactionCount", zh: "互动数", en: "Interaction Count", type: FieldType.Number },
         gender: { key: "gender", zh: "性别", en: "Gender", type: FieldType.Text },
         videoUrl: { key: "videoUrl", zh: "视频地址", en: "Video URL", type: FieldType.Text },
-        videoCover: { key: "videoCover", zh: "视频封面", en: "Video Cover", type: FieldType.Text },
+        videoCover: { key: "videoCover", zh: "视频封面地址", en: "Video Cover", type: FieldType.Text },
         musicUrl: { key: "musicUrl", zh: "配乐地址", en: "Music URL", type: FieldType.Text },
         musicTitle: { key: "musicTitle", zh: "配乐标题", en: "Music Title", type: FieldType.Text },
         signature: { key: "signature", zh: "博主签名", en: "Signature", type: FieldType.Text },
@@ -34,23 +34,15 @@ export const config = {
         ipLocation: { key: "ipLocation", zh: "归属地", en: "IP Location", type: FieldType.Text },
         fetchDataTime: { key: "fetchDataTime", zh: "数据获取时间", en: "Fetch Data Time", type: FieldType.DateTime },
         msg: { key: "msg", zh: "错误信息", en: "Error Message", type: FieldType.Text },
-        videoFile: { key: "videoFile", zh: "视频文件", en: "Video File", type: FieldType.Text }
+        videoFile: { key: "videoFile", zh: "视频文件(附件)", en: "Video File(Attachment)", type: FieldType.Attachment }
     },
     dataType: [
-        {
-            label: '获取抖音作品数据', 
-            value: 'douyinDetail', 
-            path: '/douyin/getVideoInfo',
-            canChooseField: [ 'type', 'title', 'nickname', 'releaseTime','collectionCount', 'likeCount', 'shareCount', 'commentCount', 
-                'videoUrl', 'videoCover', 'musicUrl', 'musicTitle', 'signature', 'userhome', 'videoId', 'images', 'msg', 'fetchDataTime'
-            ],
-        },
         {
             label: '获取小红书作品数据', 
             value: 'redbookNoteInfo', 
             path: '/redbook/getNoteInfo',
             canChooseField: [ "url", "type", "title", "userhome", "nickname", "userAvatar", "desc", "likeCount", "collectionCount", "commentCount", 
-                "shareCount", "videoUrl", "releaseTime", "noteId", "images", "noteCover", 'msg', 'fetchDataTime'
+                "shareCount", "videoUrl", "releaseTime", "noteId", "images", "noteCover", 'msg', 'fetchDataTime', 'videoFile'
             ],
         },
         {
@@ -64,7 +56,15 @@ export const config = {
             value: 'redbookNoteList', 
             path: '/redbook/getNoteList',
             canChooseField: ["url", "type", "title", "likeCount", "nickname", "userhome", "userAvatar", "noteCover", "noteId", 'msg', 'fetchDataTime'],
-        }
+        },
+        {
+            label: '获取抖音作品数据', 
+            value: 'douyinDetail', 
+            path: '/douyin/getVideoInfo',
+            canChooseField: [ 'type', 'title', 'nickname', 'releaseTime','collectionCount', 'likeCount', 'shareCount', 'commentCount', 
+                'videoUrl', 'videoCover', 'musicUrl', 'musicTitle', 'signature', 'userhome', 'videoId', 'images', 'msg', 'fetchDataTime'
+            ],
+        },
     ],
     doc: "https://aigccamp.feishu.cn/wiki/LvQRwI1A4iYtnMkOBtZc2zfsnMd"
 }

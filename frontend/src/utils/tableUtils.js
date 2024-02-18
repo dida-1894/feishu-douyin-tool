@@ -1,8 +1,10 @@
 import { bitable, FieldType } from "@lark-base-open/js-sdk";
 import { config } from './config';
-import {i18n} from '../locales/i18n.js';
+import { i18n } from '../locales/i18n.js';
+import { downloadFiles } from "./download";
 
 const lang = i18n.global.locale;
+const tokenToCellVaule = {};
 
 // 获取所勾选字段的字段Id
 const getSelectedFieldsId = (fieldMetaList, checkedFields) => {
@@ -58,7 +60,7 @@ export async function completeMappedFields(selection, checkedFieldsToMap) {
  */
 export async function setRecord(table, recordId, infoData, mappedFieldIdMap) {
     console.log("setRecord mappedFieldIdMap ====>", mappedFieldIdMap)
-    const recordFields = getRecordFields(infoData, mappedFieldIdMap)
+    const recordFields = await getRecordFields(infoData, mappedFieldIdMap)
     console.log("setRecord ====>", recordFields)
 
     await table.setRecord(recordId, {
@@ -67,8 +69,8 @@ export async function setRecord(table, recordId, infoData, mappedFieldIdMap) {
 }
 
 export async function addRecords(table, recordList, mappedFieldIdMap) {
-    const recordValues = recordList.map(record => {
-        const fields = getRecordFields(record, mappedFieldIdMap);
+    const recordValues = recordList.map(async (record) => {
+        const fields = await getRecordFields(record, mappedFieldIdMap);
         // 返回符合 IRecordValue 类型的对象
         return { fields };
     });
@@ -86,23 +88,29 @@ export async function addRecords(table, recordList, mappedFieldIdMap) {
  * @param {object} infoData 数据
  * @param {object} mappedFieldIdMap 字段对应列id
  */
-const getRecordFields = (infoData, mappedFields) => {
+const getRecordFields = async (infoData, mappedFields) => {
     let recordFields = {}
-    let key = ''
+    let feildId = ''
     let value = ''
     let fetchDataTimeValue = Date.now()
 
     for (let field in mappedFields) {
 
-        key = mappedFields[field]
+        let type = getFieldTypeByKey(field);
 
-        if (field === 'fetchDataTime')
+        feildId = mappedFields[field]
+
+        if (type === FieldType.Attachment) {
+            let urlList = typeof infoData[field] === 'string' ? [infoData[field]] : infoData[field];
+            value = await getAttachmentCellValue({urlList, filename: "testfilename"});
+        } else if (field === 'fetchDataTime') {
             value = fetchDataTimeValue
-        else
+        } else {
             value = infoData[field]
+        }
 
         if (value) {
-            recordFields[key] = value
+            recordFields[feildId] = value
         }
     }
     return recordFields
@@ -126,3 +134,37 @@ export function getFieldTypeByKey(key) {
     return FieldType.Text;
 }
 
+export async function getAttachmentCellValue({ urlList, filename}) {
+    return Promise.allSettled(downloadFiles(urlList, filename))
+        .then(async (resultList) => {
+            if (resultList) {
+                const fileList = resultList
+                    .filter(fileResult => fileResult.status === 'fulfilled')
+                    .map(fulfilledFile => fulfilledFile.value);
+                console.log(fileList)
+                const idList = await bitable.base.batchUploadFile(fileList).catch((e) => {
+                    console.error(e);
+                    throw e;
+                });
+                if (idList && idList.length > 0) {
+                    console.log(idList)
+                    console.log(tokenToCellVaule)
+                    var cellValue = idList.map((fileToken, index) => {
+                        var file = fileList[index]
+                        return {
+                            name: file.name,
+                            size: file.size,
+                            timeStamp: new Date().getTime(),
+                            token: fileToken,
+                            type: file.type,
+                        }
+                    });
+                    console.log(cellValue)
+                    return cellValue;
+                }
+            }
+        })
+        .catch((e) => {
+            console.error(e)
+        });
+}
