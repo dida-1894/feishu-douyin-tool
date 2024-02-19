@@ -4,24 +4,29 @@ const getXB = require('../utils/x-bogus.js')
 
 let router = express.Router();
 
+function getDyCookies(body) {
+    // 尝试从dyCookie中获取并解析dycookie
+    let dyCookie;
+    try {
+        dyCookie = body.dyCookie;
+    } catch {
+        dyCookie = null;
+    }
+
+    if (!dyCookie) {
+        let cookie = body.cookie
+        dyCookie = {
+            "ttwid": cookie
+        }
+    }
+    return dyCookie;
+}
+
 /* 获取API */
 router.post('/getVideoInfo', async function(req, res, next) {
     try {
-        // 尝试从cookies中获取并解析dycookie
-        let dyCookie;
-        try {
-            dyCookie = req.body.dyCookie;
-        } catch {
-            dyCookie = null;
-        }
-        
 
-        // 如果dycookie不存在或无法解析rs
-        const allEmpty = Object.values(dyCookie).every(value => value === '');
-        if (allEmpty) {
-            res.render('index', { videoData: {work:false} });
-            return;
-        }
+        let dyCookie = getDyCookies(req.body)
 
         // 如果未提供URL，则使用默认视频
         let videoUrl = req.body.url;

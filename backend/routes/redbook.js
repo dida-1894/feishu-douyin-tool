@@ -1,28 +1,27 @@
 const express = require('express');
 const { getAllNoteList, getProfileInfo, getNoteInfo } = require('../utils/redbookService.js');
+const { parseCookie } = require('../utils/utils.js')
 
 let router = express.Router();
+
+function getXhsCookies(cookie) {
+    let xhsCookies = {}
+    if (!cookie) {
+        return xhsCookies
+    }
+    if (typeof cookie === 'string') {
+        xhsCookies = parseCookie(cookie)
+    }
+    return xhsCookies;
+}
 
 /* 获取全部笔记API */
 router.post('/getNoteList', async function(req, res, next) {
     try {
-        // 尝试从cookies中获取并解析dycookie
-        let xhsCookies;
-        try {
-            xhsCookies = req.body.xhsCookies;
-        } catch {
-            xhsCookies = null;
-        }
+        // 尝试从cookies中获取并解析cookie
+        let xhsCookies = getXhsCookies(req.body.cookie)
         
-
-        // 如果dycookie不存在或无法解析rs
-        const allEmpty = Object.values(xhsCookies).every(value => value === '');
-        if (allEmpty) {
-            res.send({code:400, data: null, msg: '提供cookies参数缺失'})
-            return;
-        }
-
-        // 如果未提供URL，则使用默认视频
+        // 未提供URL
         let userUrl = req.body.url;
         if (!userUrl) {
             throw new Error('用户主页地址为空');
@@ -53,21 +52,8 @@ router.post('/getNoteList', async function(req, res, next) {
 /* 获取用户信息API */
 router.post('/getProfileInfo', async function(req, res, next) {
     try {
-        // 尝试从cookies中获取并解析dycookie
-        let xhsCookies;
-        try {
-            xhsCookies = req.body.xhsCookies;
-        } catch {
-            xhsCookies = null;
-        }
-        
-
-        // 如果dycookie不存在或无法解析rs
-        const allEmpty = Object.values(xhsCookies).every(value => value === '');
-        if (allEmpty) {
-            res.send({code:400, data: null, msg: '提供cookies参数缺失'})
-            return;
-        }
+        // 尝试从cookies中获取并解析cookie
+        let xhsCookies = getXhsCookies(req.body.cookie)
 
         // 如果未提供URL
         let userUrl = req.body.url;
@@ -100,21 +86,8 @@ router.post('/getProfileInfo', async function(req, res, next) {
 /* 获取笔记API */
 router.post('/getNoteInfo', async function(req, res, next) {
     try {
-        // 尝试从cookies中获取并解析dycookie
-        let xhsCookies;
-        try {
-            xhsCookies = req.body.xhsCookies;
-        } catch {
-            xhsCookies = null;
-        }
-        
-
-        // 如果dycookie不存在或无法解析rs
-        const allEmpty = Object.values(xhsCookies).every(value => value === '');
-        if (allEmpty) {
-            res.status(400).send({code:400, data: null, msg: '提供cookies参数缺失'})
-            return;
-        }
+        // 尝试从cookies中获取并解析cookie
+        let xhsCookies = getXhsCookies(req.body.cookie)
 
         // 如果未提供URL
         let noteUrl = req.body.url;

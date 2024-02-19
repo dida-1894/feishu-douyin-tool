@@ -195,15 +195,12 @@ const getQueryParams = (link, dataType) => {
   if (dataType.value == 'douyinDetail') {
       data = {
         'url': link,
-        'dyCookie': {
-          "ttwid": cookie.value
-        }
+        'cookie': cookie.value
       };
   } else {
-    let { a1, web_session} = parseCookie(xhsCookie.value)
     data = {
         'url': link,
-        "xhsCookies": { a1, web_session}
+        "cookie": xhsCookie.value
     }
   }
   return {
