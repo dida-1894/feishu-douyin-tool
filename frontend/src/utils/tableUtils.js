@@ -91,25 +91,41 @@ export async function addRecords(table, recordList, mappedFieldIdMap) {
 const getRecordFields = async (infoData, mappedFields) => {
     let recordFields = {}
     let feildId = ''
-    let value = ''
     let fetchDataTimeValue = Date.now()
 
     for (let field in mappedFields) {
+        let value = ''
 
-        let type = getFieldTypeByKey(field);
+        let fieldConfig = getFieldConfigByKey(field);
+        let key = fieldConfig.key;
 
         feildId = mappedFields[field]
 
-        if (type === FieldType.Attachment) {
-            let urlList = typeof infoData[field] === 'string' ? [infoData[field]] : infoData[field];
-            value = await getAttachmentCellValue({urlList, filename: "testfilename"});
+        if (fieldConfig && fieldConfig.type === FieldType.Attachment) {
+            let urlList = typeof infoData[key] === 'string' ? [infoData[key]] : infoData[key];
+            if (!urlList) {
+                continue;
+            }
+            urlList = urlList
+                .filter(url => url !== undefined && url !== '')  // 过滤掉 undefined 和空字符串
+                .map(url => {
+                    return config.serverHost + (fieldConfig.media == 'video' ?  "/file/getVideo?url=" : '/file/getImage?url=') + url;
+                });
+            console.log(urlList);
+            if (urlList && urlList.length > 0) {
+                value = await getAttachmentCellValue({urlList, filename: "testfilename"});
+            }
         } else if (field === 'fetchDataTime') {
             value = fetchDataTimeValue
         } else {
-            value = infoData[field]
+            value = infoData[key]
         }
 
-        if (value) {
+        if (fieldConfig.type === FieldType.Text && typeof value != 'string') {
+            value = JSON.stringify(value)
+        }
+
+        if (value && value !== '') {
             recordFields[feildId] = value
         }
     }
@@ -132,6 +148,14 @@ export function getFieldTypeByKey(key) {
         return field.type;
     }
     return FieldType.Text;
+}
+
+function getFieldConfigByKey(key) {
+    let field =  config.feilds[key];
+    if (field && field.type) {
+        return field;
+    }
+    return null;
 }
 
 export async function getAttachmentCellValue({ urlList, filename}) {

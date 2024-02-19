@@ -21,7 +21,6 @@ export const config = {
         interactionCount: { key: "interactionCount", zh: "互动数", en: "Interaction Count", type: FieldType.Number },
         gender: { key: "gender", zh: "性别", en: "Gender", type: FieldType.Text },
         videoUrl: { key: "videoUrl", zh: "视频地址", en: "Video URL", type: FieldType.Text },
-        videoCover: { key: "videoCover", zh: "视频封面地址", en: "Video Cover", type: FieldType.Text },
         musicUrl: { key: "musicUrl", zh: "配乐地址", en: "Music URL", type: FieldType.Text },
         musicTitle: { key: "musicTitle", zh: "配乐标题", en: "Music Title", type: FieldType.Text },
         signature: { key: "signature", zh: "博主签名", en: "Signature", type: FieldType.Text },
@@ -29,12 +28,14 @@ export const config = {
         videoId: { key: "videoId", zh: "视频id", en: "Video ID", type: FieldType.Text },
         noteId: { key: "noteId", zh: "笔记id", en: "Note ID", type: FieldType.Text },
         images: { key: "images", zh: "全部图片", en: "Images", type: FieldType.Text },
-        imageNoWater: { key: "imageNoWater", zh: "去水印图片", en: "Image No Water", type: FieldType.Text },
-        noteCover: { key: "noteCover", zh: "笔记封面", en: "Note Cover", type: FieldType.Text },
+        noteCover: { key: "noteCover", zh: "封面", en: "Note Cover", type: FieldType.Text },
         ipLocation: { key: "ipLocation", zh: "归属地", en: "IP Location", type: FieldType.Text },
         fetchDataTime: { key: "fetchDataTime", zh: "数据获取时间", en: "Fetch Data Time", type: FieldType.DateTime },
         msg: { key: "msg", zh: "错误信息", en: "Error Message", type: FieldType.Text },
-        videoFile: { key: "videoFile", zh: "视频文件(附件)", en: "Video File(Attachment)", type: FieldType.Attachment }
+        videoFile: { key: "videoUrl", zh: "视频文件(附件)", en: "Video File(Attachment)", type: FieldType.Attachment, media: "video", },
+        noteCoverFile: { key: "noteCover", zh: "封面(附件)", en: "Note Cover(Attachment)", type: FieldType.Attachment, media: "image", },
+        imagesFile: { key: "images", zh: "全部图片(附件)", en: "Images(Attachment)", type: FieldType.Attachment, media: "image", },
+        userAvatarFile: { key: "userAvatar", zh: "博主头像(附件)", en: "User Avatar(Attachment)", type: FieldType.Attachment, media: "image", },
     },
     dataType: [
         {
@@ -42,27 +43,27 @@ export const config = {
             value: 'redbookNoteInfo', 
             path: '/redbook/getNoteInfo',
             canChooseField: [ "url", "type", "title", "userhome", "nickname", "userAvatar", "desc", "likeCount", "collectionCount", "commentCount", 
-                "shareCount", "videoUrl", "releaseTime", "noteId", "images", "noteCover", 'msg', 'fetchDataTime', 'videoFile'
+                "shareCount", "videoUrl", "releaseTime", "noteId", "images", "noteCover", 'msg', 'fetchDataTime', 'videoFile', 'noteCoverFile', 'imagesFile', 'userAvatarFile'
             ],
         },
         {
             label: '获取小红书作者数据', 
             value: 'redbookProfileInfo', 
             path: '/redbook/getProfileInfo',
-            canChooseField: ['userhome', 'nickname', 'userAvatar', 'signature', 'followsCount', 'fansCount', 'interactionCount', 'ipLocation', 'gender', 'msg', 'fetchDataTime'],
+            canChooseField: ['userhome', 'nickname', 'userAvatar', 'signature', 'followsCount', 'fansCount', 'interactionCount', 'ipLocation', 'gender', 'msg', 'fetchDataTime', 'userAvatarFile'],
         },
         {
             label: '获取小红书作者全部笔记', 
             value: 'redbookNoteList', 
             path: '/redbook/getNoteList',
-            canChooseField: ["url", "type", "title", "likeCount", "nickname", "userhome", "userAvatar", "noteCover", "noteId", 'msg', 'fetchDataTime'],
+            canChooseField: ["url", "type", "title", "likeCount", "nickname", "userhome", "userAvatar", "noteCover", "noteId", 'msg', 'fetchDataTime', 'userAvatarFile', 'noteCoverFile'],
         },
         {
             label: '获取抖音作品数据', 
             value: 'douyinDetail', 
             path: '/douyin/getVideoInfo',
             canChooseField: [ 'type', 'title', 'nickname', 'releaseTime','collectionCount', 'likeCount', 'shareCount', 'commentCount', 
-                'videoUrl', 'videoCover', 'musicUrl', 'musicTitle', 'signature', 'userhome', 'videoId', 'images', 'msg', 'fetchDataTime'
+                'videoUrl', 'noteCover', 'musicUrl', 'musicTitle', 'signature', 'userhome', 'videoId', 'images', 'msg', 'fetchDataTime', 'videoFile', 'noteCoverFile'
             ],
         },
     ],

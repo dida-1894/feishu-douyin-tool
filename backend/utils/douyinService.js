@@ -72,7 +72,7 @@ async function GetInfo(item_ids, dycookie, getXB) {
         //const images = aweme_type !== 0 && response.data.aweme_detail.images ? response.data.aweme_detail.images.map(image => image.url_list[0]) : [];
 
         const url = video?.bit_rate?.[0]?.play_addr?.url_list?.[0] ?? '';
-        const videoCover = video?.cover?.url_list?.[0] ?? '';
+        const noteCover = video?.cover?.url_list?.[0] ?? '';
         const cleanedDesc = desc.replaceAll(invalid, repWith);
 
         const res = {
@@ -80,7 +80,7 @@ async function GetInfo(item_ids, dycookie, getXB) {
             type,
             title: cleanedDesc,
             videoUrl: url,
-            videoCover,
+            noteCover,
             musicUrl: music.play_url.uri,
             musicTitle: music.title,
             nickname: author.nickname,
