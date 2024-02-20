@@ -56,7 +56,7 @@ export const config = {
             label: '获取小红书作者全部笔记', 
             value: 'redbookNoteList', 
             path: '/redbook/getNoteList',
-            canChooseField: ["url", "type", "title", "likeCount", "nickname", "userhome", "userAvatar", "noteCover", "noteId", 'msg', 'fetchDataTime', 'userAvatarFile', 'noteCoverFile'],
+            canChooseField: ["url", "type", "title", "likeCount", "nickname", "userhome", "userAvatar", "noteCover", "noteId", 'msg', 'fetchDataTime', 'noteCoverFile'],
         },
         {
             label: '获取抖音作品数据', 
