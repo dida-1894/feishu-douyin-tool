@@ -69,11 +69,11 @@ export async function setRecord(table, recordId, infoData, mappedFieldIdMap) {
 }
 
 export async function addRecords(table, recordList, mappedFieldIdMap) {
-    const recordValues = recordList.map(async (record) => {
+    const recordValues = await Promise.all(recordList.map(async (record) => {
         const fields = await getRecordFields(record, mappedFieldIdMap);
         // 返回符合 IRecordValue 类型的对象
         return { fields };
-    });
+    }));
 
     // 打印转换后的记录列表
     console.log(recordValues);
