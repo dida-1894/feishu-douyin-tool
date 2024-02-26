@@ -23,7 +23,7 @@
     </el-form-item>
 
     <!-- X-S-Common 输入框 -->
-    <el-form-item style="margin-top: 20px;" :label="$t('labels.xSCommon')" size="large" required v-if="dataType.value != 'douyinDetail'">
+    <el-form-item style="margin-top: 20px;" :label="$t('labels.xSCommon')" size="large" v-if="dataType.value != 'douyinDetail'">
       <el-input v-model="xSCommon" type="text" :placeholder="$t('placeholder.xSCommon')"></el-input>
     </el-form-item>
 
@@ -39,7 +39,7 @@
         <el-option v-for="meta in fieldListSeView" :key="meta.id" :label="meta.name" :value="meta.id" />
       </el-select>
     </el-form-item>
-    
+
     <!-- 字段选择 -->
     <div class="map-fields-checklist">
       <el-checkbox v-model="checkAllToMap" :indeterminate="isIndeterminateToMap" @change="handlecheckAllToMapChange">{{
