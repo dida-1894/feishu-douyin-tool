@@ -22,6 +22,11 @@
       <el-input v-model="xhsCookie" type="text" :placeholder="$t('placeholder.xhsCookie')"></el-input>
     </el-form-item>
 
+    <!-- X-S-Common 输入框 -->
+    <el-form-item style="margin-top: 20px;" :label="$t('labels.xSCommon')" size="large" required v-if="dataType.value != 'douyinDetail'">
+      <el-input v-model="xSCommon" type="text" :placeholder="$t('placeholder.xSCommon')"></el-input>
+    </el-form-item>
+
     <!-- cookie 输入框 -->
     <el-form-item style="margin-top: 20px;" :label="$t('labels.cookie')" size="large" required v-if="dataType.value == 'douyinDetail'">
       <el-input v-model="cookie" type="text" :placeholder="$t('placeholder.cookie')"></el-input>
@@ -88,6 +93,7 @@ const checkAllToMap = ref(false)
 const isIndeterminateToMap = ref(true)
 const cookie = ref('')
 const xhsCookie = ref('')
+const xSCommon = ref('')
 
 const issubmitAbled = computed(() => {
   return linkFieldId.value && checkedFieldsToMap.value.length && 
@@ -201,7 +207,8 @@ const getQueryParams = (link, dataType) => {
   } else {
     data = {
         'url': link,
-        "cookie": xhsCookie.value
+        "cookie": xhsCookie.value,
+        'xSCommon': xSCommon.value,
     }
   }
   return {

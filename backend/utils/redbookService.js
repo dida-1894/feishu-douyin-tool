@@ -239,7 +239,7 @@ function handleNoteInfo(data) {
     return noteInfo;
 }
 
-async function  getNoteList(userId, xhsCookies, cursor = '') {
+async function  getNoteList(userId, xhsCookies, cursor = '', xSCommon = null) {
     let headers = get_headers()
     let params = get_params()
     params.user_id = userId
@@ -252,6 +252,9 @@ async function  getNoteList(userId, xhsCookies, cursor = '') {
 
     headers['x-s'] = ret['X-s']
     headers['x-t'] = String(ret['X-t'])
+    if (xSCommon) {
+        headers['X-S-Common'] = xSCommon
+    }
 
     let cookiesStr = Object.entries(xhsCookies).map(([k, v]) => `${k}=${v}`).join('; ');
 
@@ -276,12 +279,12 @@ async function  getNoteList(userId, xhsCookies, cursor = '') {
     };
 }
 
-async function getAllNoteList(userId, xhsCookies) {
+async function getAllNoteList(userId, xhsCookies, xSCommon) {
     var cursor = ''
     var notes = []
     var has_more = false
     do {
-        let batchResult = await getNoteList(userId, xhsCookies, cursor);
+        let batchResult = await getNoteList(userId, xhsCookies, cursor, xSCommon);
         notes = notes.concat(batchResult.notes);
         cursor = batchResult.cursor;
         has_more = batchResult.has_more;
@@ -321,14 +324,14 @@ async function getNoteInfo(noteId, xhsCookies) {
         let response = await axios.post(feedUrl, postData, {
             headers: headers,
         });
-    
+        console.log(JSON.stringify( response.data));
         let res = response.data.data;
-        // console.log(JSON.stringify( res));
+        console.log(JSON.stringify( res));
         note = handleNoteInfo(res.items[0]); // Assuming this function is already defined
     } catch (error) {
         console.log(error);
         console.log(`Note ${noteId} is not allowed to view.`);
-        return;
+        throw new Error(error.message);
     }
 
     return note;
