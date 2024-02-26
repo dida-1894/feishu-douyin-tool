@@ -306,7 +306,7 @@ async  function getProfileInfo(userId, xhsCookies) {
 }
 
 
-async function getNoteInfo(noteId, xhsCookies) {
+async function getNoteInfo(noteId, xhsCookies, xSCommon= null) {
     let postData = get_note_data(noteId)
     let data = JSON.stringify(postData)
     let feedUrl = 'https://edith.xiaohongshu.com/api/sns/web/v1/feed'
@@ -318,15 +318,18 @@ async function getNoteInfo(noteId, xhsCookies) {
     headers['x-t'] = String(ret['X-t'])
     let cookiesStr = Object.entries(xhsCookies).map(([k, v]) => `${k}=${v}`).join('; ');
     headers['Cookie'] = cookiesStr;
+    if (xSCommon) {
+        headers['X-S-Common'] = xSCommon
+    }
 
     let note;
     try {
         let response = await axios.post(feedUrl, postData, {
             headers: headers,
         });
-        console.log(JSON.stringify( response.data));
+        // console.log(JSON.stringify( response.data));
         let res = response.data.data;
-        console.log(JSON.stringify( res));
+        // console.log(JSON.stringify( res));
         note = handleNoteInfo(res.items[0]); // Assuming this function is already defined
     } catch (error) {
         console.log(error);

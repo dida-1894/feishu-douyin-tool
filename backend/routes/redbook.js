@@ -20,6 +20,7 @@ router.post('/getNoteList', async function(req, res, next) {
     try {
         // 尝试从cookies中获取并解析cookie
         let xhsCookies = getXhsCookies(req.body.cookie)
+        let xSCommon = getXhsCookies(req.body.xSCommon)
         
         // 未提供URL
         let userUrl = req.body.url;
@@ -41,7 +42,7 @@ router.post('/getNoteList', async function(req, res, next) {
         }
 
         // 使用视频ID和cookie获取视频详情
-        const noteList = await getAllNoteList(userId, xhsCookies);
+        const noteList = await getAllNoteList(userId, xhsCookies, xSCommon);
         res.send({code:0, data: noteList, msg: '成功'})
     } catch (error) {
         console.log("error==========>", error);
@@ -54,6 +55,7 @@ router.post('/getProfileInfo', async function(req, res, next) {
     try {
         // 尝试从cookies中获取并解析cookie
         let xhsCookies = getXhsCookies(req.body.cookie)
+        let xSCommon = getXhsCookies(req.body.xSCommon)
 
         // 如果未提供URL
         let userUrl = req.body.url;
@@ -88,6 +90,7 @@ router.post('/getNoteInfo', async function(req, res, next) {
     try {
         // 尝试从cookies中获取并解析cookie
         let xhsCookies = getXhsCookies(req.body.cookie)
+        let xSCommon = getXhsCookies(req.body.xSCommon)
 
         // 如果未提供URL
         let noteUrl = req.body.url;
@@ -109,7 +112,7 @@ router.post('/getNoteInfo', async function(req, res, next) {
         }
 
         // 使用笔记ID和cookie获取笔记详情
-        const noteInfo = await getNoteInfo(noteId, xhsCookies);
+        const noteInfo = await getNoteInfo(noteId, xhsCookies, xSCommon);
         res.send({code:0, data: noteInfo, msg: '成功'})
     } catch (error) {
         console.log("error==========>", error);
