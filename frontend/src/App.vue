@@ -7,6 +7,15 @@ onMounted(() => {
   script.src = "//js.users.51.la/21848355.js"
   script.type = "text/javascript"
   document.body.appendChild(script)
+
+
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?ce7af71a5920ffad38682a00b292600c";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
 })
 </script>
 
