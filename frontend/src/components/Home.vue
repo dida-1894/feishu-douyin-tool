@@ -130,6 +130,7 @@ const writeData = async () => {
   localStorage.setItem('cookie', cookie.value)   // string 类型  
   localStorage.setItem('xhsCookie', xhsCookie.value)   // string 类型
   localStorage.setItem('dataType', JSON.stringify(dataType.value))   // string 类型
+  localStorage.setItem('xSCommon', xSCommon.value)   // string 类型
 
   // 错误处理，链接字段格式错误，应为文本类型
   const linkField = await table.getFieldMetaById(linkFieldId.value)
@@ -270,6 +271,9 @@ onMounted(async () => {
   }
   if (localStorage.getItem('xhsCookie') !== null) {  // string 类型
     xhsCookie.value = localStorage.getItem('xhsCookie')
+  }
+  if (localStorage.getItem('xSCommon') !== null) {  // string 类型
+    xSCommon.value = localStorage.getItem('xSCommon')
   }
   if (localStorage.getItem('dataType') !== null) {  // string 类型
     dataType.value = JSON.parse(localStorage.getItem('dataType'))
