@@ -155,7 +155,10 @@ const writeData = async () => {
       var infoData = await getDateByUrl(link, dataType.value);
 
       console.log("writeData() >> infoData", infoData)
-      if (Array.isArray(infoData)) {
+      if (!infoData) {
+        infoData = {msg: "获取数据为空，请重试"}
+        await setRecord(table, recordId, infoData, mappedFields);
+      } else if (Array.isArray(infoData)) {
         await addRecords(table, infoData, mappedFields);
       } else {
         await setRecord(table, recordId, infoData, mappedFields);
